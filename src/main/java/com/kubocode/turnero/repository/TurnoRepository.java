@@ -8,4 +8,6 @@ import java.util.Optional;
 public interface TurnoRepository extends JpaRepository<Turno, Long> {
     Optional<Turno> findFirstByAtendidoFalseOrderByIdAsc();
     Optional<Turno> findTopByOrderByNumeroDesc();
+    Optional<Turno> findFirstByAtendidoFalseOrderByFechaAsc();
+
 }

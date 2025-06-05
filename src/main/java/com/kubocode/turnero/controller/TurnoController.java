@@ -31,5 +31,9 @@ public class TurnoController {
                 .map(ResponseEntity::ok)
                 .orElse(ResponseEntity.noContent().build());
     }
+    @PutMapping("/next/{puesto}")
+    public Turno avanzarTurno(@PathVariable int puesto) {
+        return turnoService.avanzarTurnoConPuesto(puesto);
+    }
 }
 

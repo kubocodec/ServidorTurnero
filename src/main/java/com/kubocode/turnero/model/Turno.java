@@ -16,6 +16,15 @@ public class Turno {
     private String categoria;
     private boolean atendido = false;
     private LocalDateTime fecha = LocalDateTime.now();
+    private Integer puesto;
+
+    public Integer getPuesto() {
+        return puesto;
+    }
+
+    public void setPuesto(Integer puesto) {
+        this.puesto = puesto;
+    }
 
     public boolean isAtendido() {
         return atendido;

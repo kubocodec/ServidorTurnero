@@ -37,4 +37,17 @@ public class TurnoService implements ITurnoService{
         });
         return getTurnoActual();
     }
+
+    public Turno avanzarTurnoConPuesto(int puesto) {
+        Optional<Turno> turnoOpt = turnoRepository.findFirstByAtendidoFalseOrderByFechaAsc();
+
+        if (turnoOpt.isPresent()) {
+            Turno turno = turnoOpt.get();
+            turno.setAtendido(true);
+            turno.setPuesto(puesto);  // aquí registramos el puesto que lo atendió
+            return turnoRepository.save(turno);
+        } else {
+            return null;
+        }
+    }
 }
