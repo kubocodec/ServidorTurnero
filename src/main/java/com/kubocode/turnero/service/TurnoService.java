@@ -5,6 +5,7 @@ import com.kubocode.turnero.repository.TurnoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
 @Service
 public class TurnoService implements ITurnoService{
@@ -49,5 +50,9 @@ public class TurnoService implements ITurnoService{
         } else {
             return null;
         }
+    }
+
+    public List<Turno> obtenerUltimosTurnosAtendidos() {
+        return turnoRepository.findTop5ByAtendidoTrueOrderByFechaDesc();
     }
 }
