@@ -17,38 +17,7 @@ public class Turno {
     private boolean atendido = false;
     private LocalDateTime fecha = LocalDateTime.now();
     private Integer puesto;
-
-    public Integer getPuesto() {
-        return puesto;
-    }
-
-    public void setPuesto(Integer puesto) {
-        this.puesto = puesto;
-    }
-
-    public boolean isAtendido() {
-        return atendido;
-    }
-
-    public void setAtendido(boolean atendido) {
-        this.atendido = atendido;
-    }
-
-    public String getCategoria() {
-        return categoria;
-    }
-
-    public void setCategoria(String categoria) {
-        this.categoria = categoria;
-    }
-
-    public LocalDateTime getFecha() {
-        return fecha;
-    }
-
-    public void setFecha(LocalDateTime fecha) {
-        this.fecha = fecha;
-    }
+    private Integer preferencia;
 
     public Long getId() {
         return id;
@@ -66,5 +35,44 @@ public class Turno {
         this.numero = numero;
     }
 
+    public String getCategoria() {
+        return categoria;
+    }
 
+    public void setCategoria(String categoria) {
+        this.categoria = categoria;
+    }
+
+    public boolean isAtendido() {
+        return atendido;
+    }
+
+    public void setAtendido(boolean atendido) {
+        this.atendido = atendido;
+    }
+
+    public LocalDateTime getFecha() {
+        return fecha;
+    }
+
+    public void setFecha(LocalDateTime fecha) {
+        this.fecha = fecha;
+    }
+
+    public Integer getPuesto() {
+        return puesto;
+    }
+
+    public void setPuesto(Integer puesto) {
+        this.puesto = puesto;
+    }
+
+    public Integer getPreferencia() {
+        return preferencia;
+    }
+
+    public void setPreferencia(Integer preferencia) {
+        this.preferencia = preferencia;
+    }
 }
+
