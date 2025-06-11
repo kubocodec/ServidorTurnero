@@ -41,5 +41,11 @@ public class TurnoController {
     public List<Turno> ultimosTurnos(@RequestParam(defaultValue = "5") int limite) {
         return turnoService.obtenerUltimosTurnosAtendidos(limite);
     }
+
+    @GetMapping("/ultimo")
+    public Turno obtenerUltimoTurno() {
+        return turnoService.obtenerUltimoTurno();
+    }
+
 }
 

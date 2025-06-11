@@ -18,4 +18,7 @@ public interface TurnoRepository extends JpaRepository<Turno, Long> {
 
     // Obtener los últimos turnos atendidos
     List<Turno> findTop5ByEstadoOrderByFechaCreacionDesc(String estado);
+
+    Turno findTopByOrderByIdDesc();
+
 }

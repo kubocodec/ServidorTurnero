@@ -57,4 +57,9 @@ public class TurnoService implements ITurnoService{
     public List<Turno> obtenerUltimosTurnosAtendidos(int limite) {
         return turnoRepository.findTop5ByEstadoOrderByFechaCreacionDesc("atendido");
     }
+
+    @Override
+    public Turno obtenerUltimoTurno() {
+        return turnoRepository.findTopByOrderByIdDesc();
+    }
 }
