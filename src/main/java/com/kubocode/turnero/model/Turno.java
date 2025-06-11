@@ -8,7 +8,7 @@ public class Turno {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private Integer numero;
+    private String numero;
 
     @ManyToOne
     @JoinColumn(name = "categoria_id")
@@ -64,11 +64,11 @@ public class Turno {
         this.fechaCreacion = fechaCreacion;
     }
 
-    public Integer getNumero() {
+    public String getNumero() {
         return numero;
     }
 
-    public void setNumero(Integer numero) {
+    public void setNumero(String numero) {
         this.numero = numero;
     }
 
@@ -83,7 +83,7 @@ public class Turno {
     public Turno() {
     }
 
-    public Turno(Long id, Usuario atendidoPor, Categoria categoria, String estado, LocalDateTime fechaCreacion, Integer numero, Boolean preferente) {
+    public Turno(Long id, Usuario atendidoPor, Categoria categoria, String estado, LocalDateTime fechaCreacion, String numero, Boolean preferente) {
         this.id = id;
         this.atendidoPor = atendidoPor;
         this.categoria = categoria;
