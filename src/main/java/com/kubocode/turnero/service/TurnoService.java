@@ -5,54 +5,56 @@ import com.kubocode.turnero.repository.TurnoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.List;
-import java.util.Optional;
+import java.util.Map;
+import java.util.Objects;
+import java.util.stream.Collectors;
+
 @Service
 public class TurnoService implements ITurnoService{
 
     @Autowired
-    TurnoRepository turnoRepository;
+    private TurnoRepository turnoRepository;
 
     @Override
-    public Turno nuevoTurno(String categoria) {
-        int ultimo = turnoRepository.findTopByOrderByNumeroDesc()
-                .map(Turno::getNumero)
-                .orElse(0);
-        Turno t = new Turno();
-        t.setNumero(ultimo + 1);
-        t.setCategoria(categoria);
-        return turnoRepository.save(t);
+    public Turno guardarTurno(Turno turno) {
+        turno.setEstado("abierto");
+        turno.setFechaCreacion(LocalDateTime.now());
+        return turnoRepository.save(turno);
     }
 
     @Override
-    public Optional<Turno> getTurnoActual() {
-        return turnoRepository.findFirstByAtendidoFalseOrderByIdAsc();
+    public List<Turno> obtenerTurnosAbiertosPorPreferencia(boolean preferente) {
+        return turnoRepository.findByEstado("abierto")
+                .stream()
+                .filter(t -> Objects.equals(t.getPreferente(), preferente))
+                .collect(Collectors.toList());
     }
 
     @Override
-    public Optional<Turno> avanzarTurno() {
-        Optional<Turno> turno = getTurnoActual();
-        turno.ifPresent(t -> {
-            t.setAtendido(true);
-            turnoRepository.save(t);
-        });
-        return getTurnoActual();
-    }
+    public Turno avanzarSiguienteTurno(Long categoriaId, boolean preferente) {
+        List<Turno> turnos = turnoRepository.findByCategoriaIdAndPreferenteAndEstadoOrderByFechaCreacionAsc(
+                categoriaId, preferente, "abierto"
+        );
 
-    public Turno avanzarTurnoConPuesto(int puesto) {
-        Optional<Turno> turnoOpt = turnoRepository.findFirstByAtendidoFalseOrderByFechaAsc();
-
-        if (turnoOpt.isPresent()) {
-            Turno turno = turnoOpt.get();
-            turno.setAtendido(true);
-            turno.setPuesto(puesto);  // aquí registramos el puesto que lo atendió
-            return turnoRepository.save(turno);
-        } else {
-            return null;
+        if (!turnos.isEmpty()) {
+            Turno siguiente = turnos.get(0);
+            siguiente.setEstado("en_atencion");
+            return turnoRepository.save(siguiente);
         }
+        return null;
     }
 
-    public List<Turno> obtenerUltimosTurnosAtendidos() {
-        return turnoRepository.findTop5ByAtendidoTrueOrderByFechaDesc();
+    @Override
+    public Map<String, Long> contarTurnosPorCategoria() {
+        List<Turno> turnos = turnoRepository.findByEstado("abierto");
+        return turnos.stream()
+                .collect(Collectors.groupingBy(t -> t.getCategoria().getNombre(), Collectors.counting()));
+    }
+
+    @Override
+    public List<Turno> obtenerUltimosTurnosAtendidos(int limite) {
+        return turnoRepository.findTop5ByEstadoOrderByFechaCreacionDesc("atendido");
     }
 }

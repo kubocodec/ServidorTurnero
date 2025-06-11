@@ -7,9 +7,15 @@ import java.util.List;
 import java.util.Optional;
 
 public interface TurnoRepository extends JpaRepository<Turno, Long> {
-    Optional<Turno> findFirstByAtendidoFalseOrderByIdAsc();
-    Optional<Turno> findTopByOrderByNumeroDesc();
-    Optional<Turno> findFirstByAtendidoFalseOrderByFechaAsc();
-    // ✅ Consulta automática de Spring Data JPA
-    List<Turno> findTop5ByAtendidoTrueOrderByFechaDesc();
+    // Obtener todos los turnos con un estado específico
+    List<Turno> findByEstado(String estado);
+
+    // Obtener los turnos abiertos por categoría y preferencia, ordenados por fecha
+    List<Turno> findByCategoriaIdAndPreferenteAndEstadoOrderByFechaCreacionAsc(Long categoriaId, boolean preferente, String estado);
+
+    // Contar la cantidad de turnos abiertos por categoría
+    Long countByCategoriaIdAndEstado(Long categoriaId, String estado);
+
+    // Obtener los últimos turnos atendidos
+    List<Turno> findTop5ByEstadoOrderByFechaCreacionDesc(String estado);
 }

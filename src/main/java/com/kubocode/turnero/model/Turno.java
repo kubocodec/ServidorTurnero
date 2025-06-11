@@ -1,23 +1,28 @@
 package com.kubocode.turnero.model;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-
+import jakarta.persistence.*;
 import java.time.LocalDateTime;
 
 @Entity
 public class Turno {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private int numero;
-    private String categoria;
-    private boolean atendido = false;
-    private LocalDateTime fecha = LocalDateTime.now();
-    private Integer puesto;
-    private Integer preferencia;
+
+    private Integer numero;
+
+    @ManyToOne
+    @JoinColumn(name = "categoria_id")
+    private Categoria categoria;
+
+    private String estado; // "abierto", "en_atencion", "atendido"
+
+    private Boolean preferente;
+
+    private LocalDateTime fechaCreacion;
+
+    @ManyToOne
+    @JoinColumn(name = "usuario_id")
+    private Usuario atendidoPor;
 
     public Long getId() {
         return id;
@@ -27,52 +32,66 @@ public class Turno {
         this.id = id;
     }
 
-    public int getNumero() {
-        return numero;
+    public Usuario getAtendidoPor() {
+        return atendidoPor;
     }
 
-    public void setNumero(int numero) {
-        this.numero = numero;
+    public void setAtendidoPor(Usuario atendidoPor) {
+        this.atendidoPor = atendidoPor;
     }
 
-    public String getCategoria() {
+    public Categoria getCategoria() {
         return categoria;
     }
 
-    public void setCategoria(String categoria) {
+    public void setCategoria(Categoria categoria) {
         this.categoria = categoria;
     }
 
-    public boolean isAtendido() {
-        return atendido;
+    public String getEstado() {
+        return estado;
     }
 
-    public void setAtendido(boolean atendido) {
-        this.atendido = atendido;
+    public void setEstado(String estado) {
+        this.estado = estado;
     }
 
-    public LocalDateTime getFecha() {
-        return fecha;
+    public LocalDateTime getFechaCreacion() {
+        return fechaCreacion;
     }
 
-    public void setFecha(LocalDateTime fecha) {
-        this.fecha = fecha;
+    public void setFechaCreacion(LocalDateTime fechaCreacion) {
+        this.fechaCreacion = fechaCreacion;
     }
 
-    public Integer getPuesto() {
-        return puesto;
+    public Integer getNumero() {
+        return numero;
     }
 
-    public void setPuesto(Integer puesto) {
-        this.puesto = puesto;
+    public void setNumero(Integer numero) {
+        this.numero = numero;
     }
 
-    public Integer getPreferencia() {
-        return preferencia;
+    public Boolean getPreferente() {
+        return preferente;
     }
 
-    public void setPreferencia(Integer preferencia) {
-        this.preferencia = preferencia;
+    public void setPreferente(Boolean preferente) {
+        this.preferente = preferente;
+    }
+
+    public Turno() {
+    }
+
+    public Turno(Long id, Usuario atendidoPor, Categoria categoria, String estado, LocalDateTime fechaCreacion, Integer numero, Boolean preferente) {
+        this.id = id;
+        this.atendidoPor = atendidoPor;
+        this.categoria = categoria;
+        this.estado = estado;
+        this.fechaCreacion = fechaCreacion;
+        this.numero = numero;
+        this.preferente = preferente;
     }
 }
+
 

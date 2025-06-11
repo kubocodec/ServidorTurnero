@@ -1,46 +1,45 @@
 package com.kubocode.turnero.controller;
 
 import com.kubocode.turnero.model.Turno;
+import com.kubocode.turnero.service.ITurnoService;
 import com.kubocode.turnero.service.TurnoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/api/turnos")
 public class TurnoController {
 
     @Autowired
-    private TurnoService turnoService;
+    private ITurnoService turnoService;
 
     @PostMapping
-    public ResponseEntity<Turno> crearTurno(@RequestParam String categoria) {
-        return ResponseEntity.ok(turnoService.nuevoTurno(categoria));
+    public Turno crearTurno(@RequestBody Turno turno) {
+        return turnoService.guardarTurno(turno);
     }
 
-    @GetMapping("/actual")
-    public ResponseEntity<Turno> turnoActual() {
-        return turnoService.getTurnoActual()
-                .map(ResponseEntity::ok)
-                .orElse(ResponseEntity.noContent().build());
+    @GetMapping("/abiertos")
+    public List<Turno> turnosPorPreferencia(@RequestParam boolean preferente) {
+        return turnoService.obtenerTurnosAbiertosPorPreferencia(preferente);
     }
 
-    @PutMapping("/next")
-    public ResponseEntity<Turno> siguienteTurno() {
-        return turnoService.avanzarTurno()
-                .map(ResponseEntity::ok)
-                .orElse(ResponseEntity.noContent().build());
+    @PostMapping("/siguiente")
+    public Turno siguienteTurno(@RequestParam Long categoriaId, @RequestParam boolean preferente) {
+        return turnoService.avanzarSiguienteTurno(categoriaId, preferente);
     }
-    @PutMapping("/next/{puesto}")
-    public Turno avanzarTurno(@PathVariable int puesto) {
-        return turnoService.avanzarTurnoConPuesto(puesto);
+
+    @GetMapping("/conteo")
+    public Map<String, Long> conteoPorCategoria() {
+        return turnoService.contarTurnosPorCategoria();
     }
 
     @GetMapping("/ultimos")
-    public List<Turno> obtenerUltimosTurnos() {
-        return turnoService.obtenerUltimosTurnosAtendidos();
+    public List<Turno> ultimosTurnos(@RequestParam(defaultValue = "5") int limite) {
+        return turnoService.obtenerUltimosTurnosAtendidos(limite);
     }
 }
 

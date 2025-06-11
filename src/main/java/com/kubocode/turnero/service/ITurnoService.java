@@ -5,11 +5,12 @@ import com.kubocode.turnero.model.Turno;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
-import java.util.Optional;
-@Repository
+import java.util.Map;
+
 public interface ITurnoService {
-    public Turno nuevoTurno(String categoria);
-    public Optional<Turno> getTurnoActual();
-    public Optional<Turno> avanzarTurno();
-    public List<Turno> obtenerUltimosTurnosAtendidos();
+    Turno guardarTurno(Turno turno);
+    List<Turno> obtenerTurnosAbiertosPorPreferencia(boolean preferente);
+    Turno avanzarSiguienteTurno(Long categoriaId, boolean preferente);
+    Map<String, Long> contarTurnosPorCategoria();
+    List<Turno> obtenerUltimosTurnosAtendidos(int limite);
 }
