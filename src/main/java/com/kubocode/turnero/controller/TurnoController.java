@@ -56,8 +56,5 @@ public class TurnoController {
 
         return turnoService.cerrarTurno(categoriaId, preferente, usuarioId, puesto);
     }
-
-
-
 }
 

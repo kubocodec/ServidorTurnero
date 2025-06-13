@@ -23,5 +23,6 @@ public interface TurnoRepository extends JpaRepository<Turno, Long> {
 
     Turno findFirstByCategoriaIdAndPreferenteAndEstadoOrderByFechaCreacionAsc(Long categoriaId, boolean preferente, String estado);
 
+    Turno findTopByCategoriaIdOrderByIdDesc(Long categoriaId);
 
 }

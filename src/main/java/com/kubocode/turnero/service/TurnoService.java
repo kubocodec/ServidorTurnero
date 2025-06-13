@@ -1,7 +1,9 @@
 package com.kubocode.turnero.service;
 
+import com.kubocode.turnero.model.Categoria;
 import com.kubocode.turnero.model.Turno;
 import com.kubocode.turnero.model.Usuario;
+import com.kubocode.turnero.repository.CategoriaRepository;
 import com.kubocode.turnero.repository.TurnoRepository;
 import com.kubocode.turnero.repository.UsuarioRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,12 +24,45 @@ public class TurnoService implements ITurnoService{
     @Autowired
     private UsuarioRepository usuarioRepository;
 
+    @Autowired
+    private CategoriaRepository categoriaRepository;
+
     @Override
     public Turno guardarTurno(Turno turno) {
         turno.setEstado("abierto");
         turno.setFechaCreacion(LocalDateTime.now());
+
+        // Cargar categoría desde la BD usando su ID
+        Long categoriaId = turno.getCategoria().getId();
+        Categoria categoria = categoriaRepository.findById(categoriaId)
+                .orElseThrow(() -> new RuntimeException("Categoría no encontrada con ID: " + categoriaId));
+
+        // Obtener prefijo desde nombre
+        String prefijo = categoria.getNombre().substring(0, 1).toUpperCase();
+
+        // Buscar último turno en esa categoría
+        Turno ultimo = turnoRepository.findTopByCategoriaIdOrderByIdDesc(categoriaId);
+
+        int siguienteNumero = 1;
+        if (ultimo != null && ultimo.getNumero() != null) {
+            try {
+                String ultimoNumeroStr = ultimo.getNumero().substring(1); // ej: "P005" → "005"
+                siguienteNumero = Integer.parseInt(ultimoNumeroStr) + 1;
+            } catch (NumberFormatException e) {
+                siguienteNumero = 1;
+            }
+        }
+
+        String numeroFormateado = String.format("%s%03d", prefijo, siguienteNumero);
+        turno.setNumero(numeroFormateado);
+
+        // Establecer la categoría completa cargada
+        turno.setCategoria(categoria);
+
         return turnoRepository.save(turno);
     }
+
+
 
     @Override
     public List<Turno> obtenerTurnosAbiertosPorPreferencia(boolean preferente) {
