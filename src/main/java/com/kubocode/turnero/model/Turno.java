@@ -14,11 +14,13 @@ public class Turno {
     @JoinColumn(name = "categoria_id")
     private Categoria categoria;
 
-    private String estado; // "abierto", "en_atencion", "atendido"
+    private String estado; // "abierto", "atendido"
 
     private Boolean preferente;
 
     private LocalDateTime fechaCreacion;
+
+    private Integer puesto;
 
     @ManyToOne
     @JoinColumn(name = "usuario_id")
@@ -32,12 +34,12 @@ public class Turno {
         this.id = id;
     }
 
-    public Usuario getAtendidoPor() {
-        return atendidoPor;
+    public String getNumero() {
+        return numero;
     }
 
-    public void setAtendidoPor(Usuario atendidoPor) {
-        this.atendidoPor = atendidoPor;
+    public void setNumero(String numero) {
+        this.numero = numero;
     }
 
     public Categoria getCategoria() {
@@ -56,22 +58,6 @@ public class Turno {
         this.estado = estado;
     }
 
-    public LocalDateTime getFechaCreacion() {
-        return fechaCreacion;
-    }
-
-    public void setFechaCreacion(LocalDateTime fechaCreacion) {
-        this.fechaCreacion = fechaCreacion;
-    }
-
-    public String getNumero() {
-        return numero;
-    }
-
-    public void setNumero(String numero) {
-        this.numero = numero;
-    }
-
     public Boolean getPreferente() {
         return preferente;
     }
@@ -80,17 +66,42 @@ public class Turno {
         this.preferente = preferente;
     }
 
-    public Turno() {
+    public LocalDateTime getFechaCreacion() {
+        return fechaCreacion;
     }
 
-    public Turno(Long id, Usuario atendidoPor, Categoria categoria, String estado, LocalDateTime fechaCreacion, String numero, Boolean preferente) {
-        this.id = id;
+    public void setFechaCreacion(LocalDateTime fechaCreacion) {
+        this.fechaCreacion = fechaCreacion;
+    }
+
+    public Integer getPuesto() {
+        return puesto;
+    }
+
+    public void setPuesto(Integer puesto) {
+        this.puesto = puesto;
+    }
+
+    public Usuario getAtendidoPor() {
+        return atendidoPor;
+    }
+
+    public void setAtendidoPor(Usuario atendidoPor) {
         this.atendidoPor = atendidoPor;
+    }
+
+    public Turno(Long id, String numero, Categoria categoria, String estado, Boolean preferente, LocalDateTime fechaCreacion, Integer puesto, Usuario atendidoPor) {
+        this.id = id;
+        this.numero = numero;
         this.categoria = categoria;
         this.estado = estado;
-        this.fechaCreacion = fechaCreacion;
-        this.numero = numero;
         this.preferente = preferente;
+        this.fechaCreacion = fechaCreacion;
+        this.puesto = puesto;
+        this.atendidoPor = atendidoPor;
+    }
+
+    public Turno() {
     }
 }
 

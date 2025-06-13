@@ -14,4 +14,6 @@ public interface ITurnoService {
     Map<String, Long> contarTurnosPorCategoria();
     List<Turno> obtenerUltimosTurnosAtendidos(int limite);
     Turno obtenerUltimoTurno();
+    Turno cerrarTurno(Long categoriaId, boolean preferente, Long usuarioId, Integer puesto);
+
 }

@@ -1,7 +1,9 @@
 package com.kubocode.turnero.service;
 
 import com.kubocode.turnero.model.Turno;
+import com.kubocode.turnero.model.Usuario;
 import com.kubocode.turnero.repository.TurnoRepository;
+import com.kubocode.turnero.repository.UsuarioRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -16,6 +18,9 @@ public class TurnoService implements ITurnoService{
 
     @Autowired
     private TurnoRepository turnoRepository;
+
+    @Autowired
+    private UsuarioRepository usuarioRepository;
 
     @Override
     public Turno guardarTurno(Turno turno) {
@@ -61,5 +66,26 @@ public class TurnoService implements ITurnoService{
     @Override
     public Turno obtenerUltimoTurno() {
         return turnoRepository.findTopByOrderByIdDesc();
+    }
+
+    @Override
+    public Turno cerrarTurno(Long categoriaId, boolean preferente, Long usuarioId, Integer puesto) {
+        Turno turno = turnoRepository.findFirstByCategoriaIdAndPreferenteAndEstadoOrderByFechaCreacionAsc(
+                categoriaId, preferente, "abierto"
+        );
+
+        if (turno == null) {
+            throw new RuntimeException("No hay turnos abiertos disponibles.");
+        }
+
+        turno.setEstado("atendido");
+        turno.setPuesto(puesto);
+
+        Usuario usuario = usuarioRepository.findById(usuarioId)
+                .orElseThrow(() -> new RuntimeException("Usuario no encontrado"));
+
+        turno.setAtendidoPor(usuario);
+
+        return turnoRepository.save(turno);
     }
 }

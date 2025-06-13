@@ -47,5 +47,17 @@ public class TurnoController {
         return turnoService.obtenerUltimoTurno();
     }
 
+    @PostMapping("/cerrar")
+    public Turno cerrarTurno(@RequestBody Map<String, Object> datos) {
+        Long categoriaId = Long.parseLong(datos.get("categoriaId").toString());
+        boolean preferente = Boolean.parseBoolean(datos.get("preferente").toString());
+        Long usuarioId = Long.parseLong(datos.get("usuarioId").toString());
+        Integer puesto = Integer.parseInt(datos.get("puesto").toString()); // ✅ CAMBIO AQUÍ
+
+        return turnoService.cerrarTurno(categoriaId, preferente, usuarioId, puesto);
+    }
+
+
+
 }
 
