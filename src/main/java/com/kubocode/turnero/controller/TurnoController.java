@@ -44,7 +44,7 @@ public class TurnoController {
 
     @GetMapping("/ultimo")
     public Turno obtenerUltimoTurno() {
-        return turnoService.obtenerUltimoTurno();
+        return turnoService.obtenerUltimoTurnoProcesado();
     }
 
     @PostMapping("/cerrar")

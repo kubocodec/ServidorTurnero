@@ -123,4 +123,10 @@ public class TurnoService implements ITurnoService{
 
         return turnoRepository.save(turno);
     }
+
+    @Override
+    public Turno obtenerUltimoTurnoProcesado() {
+        return turnoRepository.findFirstByEstadoOrderByFechaActualizacionDesc("atendido");
+    }
+
 }
