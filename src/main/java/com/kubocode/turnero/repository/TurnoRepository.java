@@ -27,4 +27,7 @@ public interface TurnoRepository extends JpaRepository<Turno, Long> {
 
     Turno findFirstByEstadoOrderByFechaActualizacionDesc(String estado);
 
+    List<Turno> findTop5ByEstadoOrderByFechaActualizacionDesc(String estado);
+
+
 }

@@ -37,11 +37,6 @@ public class TurnoController {
         return turnoService.contarTurnosPorCategoria();
     }
 
-    @GetMapping("/ultimos")
-    public List<Turno> ultimosTurnos(@RequestParam(defaultValue = "5") int limite) {
-        return turnoService.obtenerUltimosTurnosAtendidos(limite);
-    }
-
     @GetMapping("/ultimo")
     public Turno obtenerUltimoTurno() {
         return turnoService.obtenerUltimoTurnoProcesado();
@@ -56,5 +51,11 @@ public class TurnoController {
 
         return turnoService.cerrarTurno(categoriaId, preferente, usuarioId, puesto);
     }
+
+    @GetMapping("/ultimos")
+    public List<Turno> ultimosTurnosAtendidos() {
+        return turnoService.obtenerUltimosTurnosAtendidos();
+    }
+
 }
 

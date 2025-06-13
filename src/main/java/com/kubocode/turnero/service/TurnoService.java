@@ -129,4 +129,10 @@ public class TurnoService implements ITurnoService{
         return turnoRepository.findFirstByEstadoOrderByFechaActualizacionDesc("atendido");
     }
 
+    @Override
+    public List<Turno> obtenerUltimosTurnosAtendidos() {
+        return turnoRepository.findTop5ByEstadoOrderByFechaActualizacionDesc("atendido");
+    }
+
+
 }
