@@ -17,6 +17,7 @@ public interface ITurnoService {
     Turno cerrarTurno(Long categoriaId, boolean preferente, Long usuarioId, Integer puesto);
     Turno obtenerUltimoTurnoProcesado();
     List<Turno> obtenerUltimosTurnosAtendidos();
+    void reiniciarTurnos();
 
 
 }

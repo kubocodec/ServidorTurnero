@@ -57,5 +57,10 @@ public class TurnoController {
         return turnoService.obtenerUltimosTurnosAtendidos();
     }
 
-}
+    @PostMapping("/reiniciar")
+    public ResponseEntity<String> reiniciarTurnos() {
+        turnoService.reiniciarTurnos();
+        return ResponseEntity.ok("Los turnos han sido reiniciados a 0");
+    }
 
+}

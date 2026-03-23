@@ -134,5 +134,9 @@ public class TurnoService implements ITurnoService{
         return turnoRepository.findTop5ByEstadoOrderByFechaActualizacionDesc("atendido");
     }
 
+    @Override
+    public void reiniciarTurnos() {
+        turnoRepository.deleteAll();
+    }
 
 }
