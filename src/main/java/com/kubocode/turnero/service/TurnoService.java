@@ -139,4 +139,16 @@ public class TurnoService implements ITurnoService{
         turnoRepository.deleteAll();
     }
 
+    @Override
+    public Turno rellamarTurno(Long id) {
+        Turno turno = turnoRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Turno no encontrado con ID: " + id));
+
+        Integer currentLlamadas = turno.getCantidadLlamadas();
+        turno.setCantidadLlamadas(currentLlamadas != null ? currentLlamadas + 1 : 2);
+        turno.setFechaActualizacion(LocalDateTime.now());
+        
+        return turnoRepository.save(turno);
+    }
+
 }

@@ -18,6 +18,7 @@ public interface ITurnoService {
     Turno obtenerUltimoTurnoProcesado();
     List<Turno> obtenerUltimosTurnosAtendidos();
     void reiniciarTurnos();
+    Turno rellamarTurno(Long id);
 
 
 }

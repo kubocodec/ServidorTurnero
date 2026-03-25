@@ -28,6 +28,8 @@ public class Turno {
     @JoinColumn(name = "usuario_id")
     private Usuario atendidoPor;
 
+    private Integer cantidadLlamadas = 1;
+
     public Turno() {
     }
 
@@ -113,6 +115,14 @@ public class Turno {
 
     public void setPuesto(Integer puesto) {
         this.puesto = puesto;
+    }
+
+    public Integer getCantidadLlamadas() {
+        return cantidadLlamadas;
+    }
+
+    public void setCantidadLlamadas(Integer cantidadLlamadas) {
+        this.cantidadLlamadas = cantidadLlamadas;
     }
 }
 

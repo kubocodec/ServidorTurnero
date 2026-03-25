@@ -63,4 +63,9 @@ public class TurnoController {
         return ResponseEntity.ok("Los turnos han sido reiniciados a 0");
     }
 
+    @PostMapping("/{id}/rellamar")
+    public Turno rellamarTurno(@PathVariable("id") Long id) {
+        return turnoService.rellamarTurno(id);
+    }
+
 }
