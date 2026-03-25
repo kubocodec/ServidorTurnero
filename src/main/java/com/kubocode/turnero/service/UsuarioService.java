@@ -5,10 +5,11 @@ import com.kubocode.turnero.repository.UsuarioRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
-public class UsuarioService implements IUsuarioService{
+public class UsuarioService implements IUsuarioService {
     @Autowired
     private UsuarioRepository usuarioRepository;
 
@@ -22,5 +23,33 @@ public class UsuarioService implements IUsuarioService{
             }
         }
         return null;
+    }
+
+    @Override
+    public List<Usuario> listarUsuarios() {
+        return usuarioRepository.findAll();
+    }
+
+    @Override
+    public Usuario guardarUsuario(Usuario u) {
+        return usuarioRepository.save(u);
+    }
+
+    @Override
+    public Usuario actualizarUsuario(Long id, Usuario u) {
+        Usuario existente = usuarioRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Usuario no encontrado con ID: " + id));
+        existente.setNombre(u.getNombre());
+        existente.setUsername(u.getUsername());
+        existente.setRol(u.getRol());
+        if (u.getPassword() != null && !u.getPassword().trim().isEmpty()) {
+            existente.setPassword(u.getPassword());
+        }
+        return usuarioRepository.save(existente);
+    }
+
+    @Override
+    public void eliminarUsuario(Long id) {
+        usuarioRepository.deleteById(id);
     }
 }
