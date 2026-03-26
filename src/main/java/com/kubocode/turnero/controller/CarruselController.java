@@ -14,10 +14,14 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
+
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 @RestController
 @RequestMapping("/api/carrusel")
@@ -42,9 +46,45 @@ public class CarruselController {
                     f -> f.isFile() && (f.getName().endsWith(".jpg") || f.getName().endsWith(".png") || f.getName().endsWith(".jpeg"))
             );
             if (archivos == null) return Collections.emptyList();
-            return Arrays.stream(archivos).map(File::getName).collect(Collectors.toList());
+            
+            List<String> todasLasImagenes = Arrays.stream(archivos).map(File::getName).collect(Collectors.toList());
+            
+            // Intentar leer orden.json
+            Path ordenPath = dir.resolve("orden.json");
+            if (Files.exists(ordenPath)) {
+                ObjectMapper mapper = new ObjectMapper();
+                List<String> ordenadas = mapper.readValue(ordenPath.toFile(), new TypeReference<List<String>>() {});
+                
+                // Filtrar las que existen realmente
+                List<String> resultado = ordenadas.stream()
+                        .filter(todasLasImagenes::contains)
+                        .collect(Collectors.toList());
+                        
+                // Agregar las nuevas que no están en el orden
+                for (String img : todasLasImagenes) {
+                    if (!resultado.contains(img)) {
+                        resultado.add(img);
+                    }
+                }
+                return resultado;
+            }
+            
+            return todasLasImagenes;
         } catch (Exception e) {
             return Collections.emptyList();
+        }
+    }
+
+    @PostMapping("/orden")
+    public ResponseEntity<String> guardarOrden(@RequestBody List<String> orden) {
+        try {
+            Path dir = getDirectorio();
+            Path ordenPath = dir.resolve("orden.json");
+            ObjectMapper mapper = new ObjectMapper();
+            mapper.writeValue(ordenPath.toFile(), orden);
+            return ResponseEntity.ok("Orden guardado correctamente");
+        } catch (Exception e) {
+            return ResponseEntity.internalServerError().body("Error al guardar orden: " + e.getMessage());
         }
     }
 
